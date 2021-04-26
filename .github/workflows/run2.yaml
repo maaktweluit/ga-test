@@ -20,6 +20,7 @@ jobs:
           workflow: run1.yml
           commit: ${{github.event.workflow_run.head.sha}}
           workflow_conclusion: success
+          name: homework
       - shell: bash
         run: |
           value=`cat math-homework.txt`
@@ -27,5 +28,5 @@ jobs:
       - name: Upload math result for job 2
         uses: actions/upload-artifact@v2
         with:
-          name: homework
+          name: homework-2
           path: math-homework.txt
