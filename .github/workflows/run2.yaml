@@ -10,6 +10,10 @@ jobs:
     name: Multiply by 9
     runs-on: windows-latest
     steps:
+      - name: Sleep for 10 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '10s'
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
