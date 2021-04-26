@@ -15,7 +15,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: run1.yml
-          commit: ${{github.event.workflow_run.head_branch}}
+          commit: ${{github.event.workflow_run.head_commit.id}}
           workflow_conclusion: success
           name: homework
       - shell: bash
