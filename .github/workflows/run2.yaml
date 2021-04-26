@@ -8,7 +8,7 @@ on:
 jobs:
   job_2:
     name: Multiply by 9
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Sleep for 10 seconds
         uses: jakejarvis/wait-action@master
