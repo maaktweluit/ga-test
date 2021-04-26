@@ -2,13 +2,11 @@ name: Share data between jobs
 
 workflow_run:
   workflows: ["Share data between jobs"]
-  types:
-    - completed
+  types: [completed]
 
 jobs:
   job_2:
     name: Multiply by 9
-    needs: job_1
     runs-on: windows-latest
     steps:
       - name: Download math result for job 1
