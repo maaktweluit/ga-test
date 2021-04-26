@@ -1,6 +1,9 @@
 name: Share data between jobs
 
-on: [push]
+workflow_run:
+  workflows: ["Share data between jobs"]
+  types:
+    - completed
 
 jobs:
   job_2:
