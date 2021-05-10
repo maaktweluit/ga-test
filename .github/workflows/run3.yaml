@@ -1,0 +1,44 @@
+name: Share data between jobs 3
+
+on: [push]
+
+jobs:
+  job_3:
+    name: runs because
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for build to succeed
+        uses: tomchv/wait-my-workflow@v1.1.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: "Add 3 and 7"
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          timeoutSeconds: 600
+
+      - run: echo ${{ toJson(steps) }} 
+
+      - name: Wait for test to succeed
+        uses: tomchv/wait-my-workflow@v1.1.0
+        id: wait-for-test
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: "Multiply by 9"
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          timeoutSeconds: 600
+
+      - name: Do something if build success
+        if: steps.wait-build.outputs.conclusion == 'success'
+        run: echo success && true # You can also just continue with
+
+      - name: Do something if build isn't launch
+        if: steps.wait-build.outputs.conclusion == 'does not exist'
+        run: echo job does not exist && true
+
+      - name: Do something if build fail
+        if: steps.wait-build.outputs.conclusion == 'failure'
+        run: echo fail && false # fail if build fail
+
+      - name: Do something if build timeout
+        if: steps.wait-build.outputs.conclusion == 'timed_out'
+        run: echo Timeout && false # fail if build time out
