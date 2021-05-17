@@ -1,6 +1,13 @@
 name: Share data between jobs 3
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - release/*
 
 jobs:
   job_3:
@@ -16,7 +23,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           timeoutSeconds: 600
 
-      - run: echo ${{ toJson(steps) }} 
+      - name: print and exit
+        run: echo job status= ${{ steps.wait-for-build.outputs.conclusion }} && ${{ fromJSON('["false", "true"]')[steps.wait-for-build.outputs.conclusion == 'success'] }}
+
+      #- run: echo ${{ toJson(steps) }}
+      - name: Sleep to wait for the build to trigger
+        run: sleep 1m
 
       - name: Wait for test to succeed
         uses: tomchv/wait-my-workflow@v1.1.0
@@ -26,6 +38,14 @@ jobs:
           checkName: "Multiply by 9"
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           timeoutSeconds: 600
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: run2.yaml
+          commit: ${{github.event.workflow_run.head_commit.id}}
+          workflow_conclusion: success
+          name: homework-2
 
       - name: Do something if build success
         if: steps.wait-build.outputs.conclusion == 'success'
