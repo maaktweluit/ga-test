@@ -24,7 +24,7 @@ jobs:
           timeoutSeconds: 600
 
       - name: print and exit
-        run: echo job status: ${{ steps.wait-for-build.outputs.conclusion }} && ${{ fromJSON('["false", "true"]')[steps.wait-for-build.outputs.conclusion == 'success'] }}
+        run: echo job status= ${{ steps.wait-for-build.outputs.conclusion }} && ${{ fromJSON('["false", "true"]')[steps.wait-for-build.outputs.conclusion == 'success'] }}
 
       #- run: echo ${{ toJson(steps) }}
       - name: Sleep to wait for the build to trigger
