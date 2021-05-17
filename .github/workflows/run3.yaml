@@ -23,6 +23,9 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           timeoutSeconds: 600
 
+      - name: print and exit
+        run: echo job was ${{ steps.wait-for-build.outputs.conclusion }} && ${{ steps.wait-for-build.outputs.conclusion == 'success' ? true : false }}
+
       #- run: echo ${{ toJson(steps) }}
       - name: Sleep to wait for the build to trigger
         run: sleep 1m
